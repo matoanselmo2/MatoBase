@@ -113,8 +113,8 @@ example-message: "&aOnline players: %online%"
 
 | Command               | Description                     | Permission          |  
 |-----------------------|---------------------------------|--------------------|  
-| `/matobase reload`    | Reloads configurations          | `matobase.reload`  |  
-| `/matobase test`      | Test command                    | `matobase.test`    |  
+| `/matobase reload`    | Reloads configurations          | `matobase.admin`  |  
+| `/matobase test`      | Test command                    | `matobase.admin`    |  
 
 ___  
 
