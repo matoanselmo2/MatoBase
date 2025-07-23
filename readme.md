@@ -1,4 +1,5 @@
 # 📚 MatoBase - Documentação do Plugin
+[English Version](https://github.com/matoanselmo2/MatoBase/blob/master/readme-en.md)
 
 ## 📌 Visão Geral
 O **MatoBase** é um sistema modular para desenvolvimento de plugins Bukkit/Paper, oferecendo:
@@ -113,8 +114,8 @@ mensagem-exemplo: "&aJogadores online: %online%"
 
 | Comando               | Descrição                     | Permissão          |
 |-----------------------|-------------------------------|--------------------|
-| `/matobase reload`    | Recarrega as configurações    | `matobase.reload`  |
-| `/matobase test`      | Comando de teste              | `matobase.test`    |
+| `/matobase reload`    | Recarrega as configurações    | `matobase.admin`  |
+| `/matobase test`      | Comando de teste              | `matobase.admin`    |
 
 ___
 
