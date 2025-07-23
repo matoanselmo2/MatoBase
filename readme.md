@@ -1,4 +1,5 @@
-# 📚 MatoBase - Documentação do Plugin [English Version](https://github.com/matoanselmo2/MatoBase/blob/master/readme-en.md)
+# 📚 MatoBase - Documentação do Plugin
+[English Version](https://github.com/matoanselmo2/MatoBase/blob/master/readme-en.md)
 
 ## 📌 Visão Geral
 O **MatoBase** é um sistema modular para desenvolvimento de plugins Bukkit/Paper, oferecendo:
