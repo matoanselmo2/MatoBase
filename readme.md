@@ -114,8 +114,8 @@ mensagem-exemplo: "&aJogadores online: %online%"
 
 | Comando               | Descrição                     | Permissão          |
 |-----------------------|-------------------------------|--------------------|
-| `/matobase reload`    | Recarrega as configurações    | `matobase.reload`  |
-| `/matobase test`      | Comando de teste              | `matobase.test`    |
+| `/matobase reload`    | Recarrega as configurações    | `matobase.admin`  |
+| `/matobase test`      | Comando de teste              | `matobase.admin`    |
 
 ___
 
