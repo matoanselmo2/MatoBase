@@ -1,5 +1,6 @@
 reload-message: "&aConfiguração recarregada com sucesso!"
 no-permission: "&cVocê não tem permissão para executar este comando!"
+help-header: "&6&lMatoBase &7- &fComandos disponíveis:"
 
 command:
   no-description: "&cNenhuma descrição fornecida para este comando."
