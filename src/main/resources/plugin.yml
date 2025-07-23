@@ -1,0 +1,13 @@
+name: MatoBase
+version: '1.0-SNAPSHOT'
+main: me.mato.plugin.MatoBase
+api-version: '1.12.2'
+authors: [ Mato (Mateus Anselmo) ]
+description: Um plugin base para eu começar outros projetos. Já com suporte a PlaceholderAPI e comandos básicos.
+softdepend: [PlaceholderAPI]
+
+commands:
+  matobase:
+    description: O comando principal do plugin MatoBase.
+    usage: /<command>
+    permission-message: No permission to use this command.

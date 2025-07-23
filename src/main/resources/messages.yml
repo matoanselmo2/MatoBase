@@ -1,0 +1,12 @@
+reload-message: "&aConfiguração recarregada com sucesso!"
+no-permission: "&cVocê não tem permissão para executar este comando!"
+
+command:
+  no-description: "&cNenhuma descrição fornecida para este comando."
+  insufficient-args: "&cArgumentos insuficientes! &7(Esperados: %expected%, Recebidos: %received%) \n&cUso: &f%usage%"
+  invalid-arg: "&cArgumento inválido na posição %position%: &f%argument% &7(Esperado: %expected%) \n&cUso: &f%usage%"
+
+argument:
+  invalid-player: "&cO jogador %name% não existe ou está offline!"
+  invalid-integer: "&cO valor %value% não é um número inteiro válido!"
+  invalid-boolean: "&cO valor %value% não é um booleano válido!"
