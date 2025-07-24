@@ -1,8 +1,8 @@
-package me.mato.plugin.manager;
+package me.mato.plugin.game.manager;
 
 import me.mato.plugin.MatoBase;
-import me.mato.plugin.commands.CommandBase;
-import me.mato.plugin.commands.impl.main.MainCommand;
+import me.mato.plugin.api.command.CommandBase;
+import me.mato.plugin.game.command.main.MainCommand;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 

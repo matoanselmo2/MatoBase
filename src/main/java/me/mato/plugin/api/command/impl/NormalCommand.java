@@ -1,5 +1,6 @@
-package me.mato.plugin.commands;
+package me.mato.plugin.api.command.impl;
 
+import me.mato.plugin.api.command.CommandBase;
 import me.mato.plugin.util.Argument;
 import me.mato.plugin.util.CommandUtil;
 import me.mato.plugin.util.Permissions;

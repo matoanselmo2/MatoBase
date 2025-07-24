@@ -1,13 +1,11 @@
 package me.mato.plugin;
 
-import me.mato.plugin.config.ConfigHelper;
-import me.mato.plugin.manager.CommandManager;
-import me.mato.plugin.manager.DatabaseManager;
+import me.mato.plugin.api.config.ConfigHelper;
+import me.mato.plugin.game.manager.CommandManager;
+import me.mato.plugin.game.manager.DatabaseManager;
 import me.mato.plugin.util.Placeholder;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public final class MatoBase extends JavaPlugin {
 
@@ -28,7 +26,9 @@ public final class MatoBase extends JavaPlugin {
 
         configHelper = new ConfigHelper(this, placeholder);
         commandManager = new CommandManager(this);
-        databaseManager = new DatabaseManager(this);
+
+        databaseManager = new DatabaseManager();
+        databaseManager.init(this);
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             getLogger().info("PlaceholderAPI found! Enabling placeholders.");

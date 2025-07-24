@@ -1,7 +1,7 @@
-package me.mato.plugin.commands;
+package me.mato.plugin.api.command;
 
 import me.mato.plugin.MatoBase;
-import me.mato.plugin.config.ConfigHelper;
+import me.mato.plugin.api.config.ConfigHelper;
 import me.mato.plugin.util.Argument;
 import me.mato.plugin.util.Permissions;
 import org.bukkit.command.*;

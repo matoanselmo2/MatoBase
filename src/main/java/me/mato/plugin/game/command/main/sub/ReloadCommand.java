@@ -1,6 +1,6 @@
-package me.mato.plugin.commands.impl.main.sub;
+package me.mato.plugin.game.command.main.sub;
 
-import me.mato.plugin.commands.NormalCommand;
+import me.mato.plugin.api.command.impl.NormalCommand;
 import me.mato.plugin.util.CommandUtil;
 import me.mato.plugin.util.Permissions;
 import org.bukkit.command.CommandSender;

@@ -1,7 +1,7 @@
-package me.mato.plugin.commands.impl.main.sub;
+package me.mato.plugin.game.command.main.sub;
 
 import me.mato.plugin.MatoBase;
-import me.mato.plugin.commands.NormalCommand;
+import me.mato.plugin.api.command.impl.NormalCommand;
 import me.mato.plugin.util.Argument;
 import me.mato.plugin.util.CommandUtil;
 import me.mato.plugin.util.Permissions;
@@ -28,6 +28,6 @@ public class TestCommand extends NormalCommand {
         CommandUtil.sendMessage(sender, "&aPlayer: &7" + parsedPlayer.getName() + " (" + (parsedPlayer.isOnline() ? "Online" : "Offline") + ")");
         CommandUtil.sendMessage(sender, "&aPlugin Version: &7" + MatoBase.getInstance().getDescription().getVersion());
         CommandUtil.sendMessage(sender, "&aPlugin Version: &7" + MatoBase.getInstance().getDescription().getVersion());
-        CommandUtil.sendMessage(sender, "&aDatabase Connected? " + MatoBase.getInstance().getDatabaseManager().isConnected());
+        CommandUtil.sendMessage(sender, "&aDatabase Connected: &7" + MatoBase.getInstance().getDatabaseManager().getEngine());
     }
 }

@@ -1,4 +1,4 @@
-package me.mato.plugin.config;
+package me.mato.plugin.api.config;
 
 import me.mato.plugin.util.Placeholder;
 import org.bukkit.ChatColor;

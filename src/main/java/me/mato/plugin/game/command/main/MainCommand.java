@@ -1,9 +1,9 @@
-package me.mato.plugin.commands.impl.main;
+package me.mato.plugin.game.command.main;
 
 import me.mato.plugin.MatoBase;
-import me.mato.plugin.commands.ParentCommand;
-import me.mato.plugin.commands.impl.main.sub.ReloadCommand;
-import me.mato.plugin.commands.impl.main.sub.TestCommand;
+import me.mato.plugin.api.command.impl.ParentCommand;
+import me.mato.plugin.game.command.main.sub.ReloadCommand;
+import me.mato.plugin.game.command.main.sub.TestCommand;
 import me.mato.plugin.util.Permissions;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
