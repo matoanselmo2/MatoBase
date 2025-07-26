@@ -1,0 +1,10 @@
+database:
+  type: SQLITE
+  mysql:
+    host: localhost
+    port: 3306
+    database: mato
+    username: root
+    password: root
+  sqlite:
+    database: database.db

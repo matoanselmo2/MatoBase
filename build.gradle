@@ -1,0 +1,69 @@
+import xyz.jpenilla.runpaper.task.RunServer
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
+}
+
+group = 'me.mato.plugin.base'
+version = '1.0-SNAPSHOT'
+
+def targetJavaVersion = 17
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
+
+    implementation "com.google.code.gson:gson:2.10.1"
+    implementation "com.google.inject:guice:7.0.0"
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+
+    relocate 'com.google.gson', 'me.mato.plugin.shaded.gson'
+    relocate 'com.google.inject', 'me.mato.plugin.shaded.guice'
+
+    minimize()
+}
+
+build.dependsOn shadowJar
+
+tasks.register("runServer1.20", RunServer) {
+    dependsOn tasks.named("shadowJar")
+    minecraftVersion("1.20.1")
+    pluginJars = files(tasks.named("shadowJar").get().archiveFile.get().asFile)
+    jvmArgs = ["-Dcom.mojang.eula.agree=true"]
+    runDirectory = file("run")
+    group = "run paper"
+}
