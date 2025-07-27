@@ -11,6 +11,7 @@ import me.mato.plugin.base.data.database.DatabaseFactory;
 import me.mato.plugin.base.data.database.config.DatabaseConfigLoader;
 import me.mato.plugin.base.data.database.config.IDatabaseConfig;
 import me.mato.plugin.base.data.database.engine.AbstractDatabaseEngine;
+import me.mato.plugin.base.manager.GuiManager;
 
 public class PluginModule extends AbstractModule {
     private final MatoBase plugin;
@@ -27,6 +28,9 @@ public class PluginModule extends AbstractModule {
         AbstractDatabaseEngine engine = DatabaseFactory.createDatabaseEngine(plugin, config);
 
         bind(AbstractDatabaseEngine.class).toInstance(engine);
+
+        GuiManager guiManager = new GuiManager(plugin);
+        //guiManager.registerGui();
 
         PlayerDAO playerDAO = new PlayerDAO(engine);
         playerDAO.createTable();
