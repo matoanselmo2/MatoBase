@@ -34,9 +34,56 @@ public record CommandContext(CommandSender sender, String[] args) {
         }
     }
 
+    public int intArg(int index, int defaultV) {
+        try {
+            return intArg(index);
+        } catch (NumberFormatException e) {
+            return defaultV;
+        } catch (IllegalArgumentException e) {
+            return defaultV;
+        }
+    }
+
+    public double doubleArg(int index) {
+        try {
+            return Double.parseDouble(arg(index));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("O argumento '" + arg(index) + "' não é um número decimal.");
+        }
+    }
+
+    public double doubleArg(int index, double defaultV) {
+        try {
+            return doubleArg(index);
+        } catch (NumberFormatException e) {
+            return defaultV;
+        } catch (IllegalArgumentException e) {
+            return defaultV;
+        }
+    }
+
     public Player player(int index) {
         Player target = Bukkit.getPlayerExact(arg(index));
         if (target == null) throw new IllegalArgumentException("Jogador não encontrado: " + arg(index));
+        return target;
+    }
+
+    public Player playerOrSelf(int index) {
+        if (index < 0 || index >= args.length) {
+            throw new IllegalArgumentException("Índice do argumento fora do alcance: " + index);
+        }
+
+        String playerName = arg(index);
+        Player target = Bukkit.getPlayerExact(playerName);
+
+        if (target == null) {
+            if (isPlayer() && playerName.equalsIgnoreCase(player().getName())) {
+                return player();
+            }
+
+            throw new IllegalArgumentException("Jogador não encontrado: " + playerName);
+        }
+
         return target;
     }
 

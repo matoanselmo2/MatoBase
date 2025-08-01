@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 import me.mato.plugin.base.MatoBase;
 import me.mato.plugin.base.command.BaseCommand;
 import me.mato.plugin.base.command.CommandContext;
-import me.mato.plugin.base.data.dao.PlayerDAO;
-import me.mato.plugin.base.data.model.PlayerDataModel;
+import me.mato.plugin.base.api.dao.PlayerDAO;
+import me.mato.plugin.base.api.model.PlayerDataModel;
 import me.mato.plugin.base.util.Permission;
 
 import java.util.List;
