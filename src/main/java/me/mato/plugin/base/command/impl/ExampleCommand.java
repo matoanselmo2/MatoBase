@@ -3,12 +3,11 @@ package me.mato.plugin.base.command.impl;
 import me.mato.plugin.base.command.BaseCommand;
 import me.mato.plugin.base.command.CommandContext;
 import me.mato.plugin.base.command.impl.sub.ExampleSubCommand;
-
-import java.util.List;
+import me.mato.plugin.base.util.Permission;
 
 public class ExampleCommand extends BaseCommand {
     public ExampleCommand() {
-        super("example", "Um comando de exemplo para demonstração do sistema de argumentos");
+        super("example", "Um comando de exemplo para demonstração do sistema de argumentos", Permission.EXEMPLO);
         registerSubCommand(new ExampleSubCommand());
     }
 
@@ -21,10 +20,5 @@ public class ExampleCommand extends BaseCommand {
         } else {
             context.sender().sendMessage("Nenhum argumento fornecido.");
         }
-    }
-
-    @Override
-    public List<String> tab(CommandContext context) {
-        return List.of();
     }
 }

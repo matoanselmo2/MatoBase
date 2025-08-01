@@ -22,7 +22,27 @@ public abstract class BaseCommand {
 
     public abstract void execute(CommandContext context);
 
-    public abstract List<String> tab(CommandContext context);
+    public List<String> tab(CommandContext context) {
+        if (context.args().length == 0) {
+            return List.of();
+        }
+
+        if (context.args().length == 1) {
+            return subCommands.keySet().stream()
+                    .filter(cmd -> cmd.startsWith(context.args()[0].toLowerCase()))
+                    .sorted()
+                    .toList();
+        }
+
+        String subName = context.args()[0].toLowerCase();
+        SubCommand sub = subCommands.get(subName);
+
+        if (sub != null) {
+            return sub.tabComplete(context.subContext());
+        }
+
+        return List.of();
+    }
 
     public void registerSubCommand(SubCommand sub) {
         subCommands.put(sub.name().toLowerCase(), sub);

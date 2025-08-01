@@ -2,13 +2,16 @@ package me.mato.plugin.base;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import lombok.Getter;
 import me.mato.plugin.base.data.database.engine.AbstractDatabaseEngine;
 import me.mato.plugin.base.di.PluginModule;
 import me.mato.plugin.base.manager.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MatoBase extends JavaPlugin {
+    @Getter
     private Injector injector;
+
     private AbstractDatabaseEngine databaseEngine;
 
     @Override
@@ -35,9 +38,5 @@ public final class MatoBase extends JavaPlugin {
                 getLogger().severe("Erro ao desconectar da database: " + e.getMessage());
             }
         }
-    }
-
-    public Injector getInjector() {
-        return injector;
     }
 }

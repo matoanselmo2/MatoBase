@@ -1,15 +1,17 @@
 package me.mato.plugin.base.data.dao;
 
 import com.google.inject.Inject;
+import lombok.Getter;
 import me.mato.plugin.base.data.database.engine.AbstractDatabaseEngine;
 import me.mato.plugin.base.data.model.PlayerDataModel;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+@Getter
 public class PlayerDAO {
+
     private final AbstractDatabaseEngine engine;
     private final Map<UUID, PlayerDataModel> playerCache = new HashMap<>();
 
@@ -19,80 +21,71 @@ public class PlayerDAO {
     }
 
     public void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS players (" +
-                     "uuid VARCHAR(36) PRIMARY KEY, " +
-                     "name VARCHAR(255) NOT NULL, " +
-                     "level INT NOT NULL" +
-                     ")";
+        String sql = """
+            CREATE TABLE IF NOT EXISTS players (
+                uuid VARCHAR(36) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                level INT NOT NULL
+            )
+        """;
 
         try {
             engine.createTables(sql);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao criar tabela de jogadores", e);
         }
-
-        loadPlayerCache();
     }
 
-    public void insertPlayer(String uuid, String name, int level) {
+    public void insertPlayer(PlayerDataModel player) {
         String sql = "INSERT INTO players (uuid, name, level) VALUES (?, ?, ?)";
 
-        engine.update(sql, stmt -> {
-            try {
-                stmt.setString(1, uuid);
-                stmt.setString(2, name);
-                stmt.setInt(3, level);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        engine.executeUpdate(sql, stmt -> {
+            stmt.setString(1, player.uuid().toString());
+            stmt.setString(2, player.name());
+            stmt.setInt(3, player.level());
         });
 
-        loadPlayerCache();
+        playerCache.put(player.uuid(), player);
     }
 
-    public void updatePlayer(UUID uuid, int level) {
+    public void updatePlayerLevel(UUID uuid, int level) {
         String sql = "UPDATE players SET level = ? WHERE uuid = ?";
 
-        engine.update(sql, stmt -> {
-            try {
-                stmt.setInt(1, level);
-                stmt.setString(2, uuid.toString());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        engine.executeUpdate(sql, stmt -> {
+            stmt.setInt(1, level);
+            stmt.setString(2, uuid.toString());
         });
 
-        loadPlayerCache();
+        PlayerDataModel existing = playerCache.get(uuid);
+        if (existing != null) {
+            playerCache.put(uuid, new PlayerDataModel(uuid, existing.name(), level));
+        }
     }
 
     public void loadPlayerCache() {
         String sql = "SELECT uuid, name, level FROM players";
 
-        engine.query(sql, rs -> {
-            try {
-                while (rs.next()) {
-                    UUID uuid = UUID.fromString(rs.getString("uuid"));
-                    String name = rs.getString("name");
-                    int level = rs.getInt("level");
-
-                    PlayerDataModel playerData = new PlayerDataModel(uuid, name, level);
-                    playerCache.put(uuid, playerData);
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+        engine.executeQuery(sql, stmt -> {}, rs -> {
+            playerCache.clear();
+            while (rs.next()) {
+                PlayerDataModel player = toModel(rs);
+                playerCache.put(player.uuid(), player);
             }
         });
     }
 
-    public PlayerDataModel getPlayerData(UUID uuid) {
-        return playerCache.get(uuid);
+    public Optional<PlayerDataModel> getPlayerData(UUID uuid) {
+        return Optional.ofNullable(playerCache.get(uuid));
     }
 
-    public AbstractDatabaseEngine getEngine() {
-        return engine;
+    public List<PlayerDataModel> getAllPlayers() {
+        return new ArrayList<>(playerCache.values());
     }
 
-    public Map<UUID, PlayerDataModel> getPlayerCache() {
-        return playerCache;
+    private PlayerDataModel toModel(ResultSet rs) throws SQLException {
+        UUID uuid = UUID.fromString(rs.getString("uuid"));
+        String name = rs.getString("name");
+        int level = rs.getInt("level");
+        return new PlayerDataModel(uuid, name, level);
     }
 }

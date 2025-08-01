@@ -1,75 +1,107 @@
 package me.mato.plugin.base.data.database.engine;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.Getter;
 import me.mato.plugin.base.data.database.config.IDatabaseConfig;
+import me.mato.plugin.base.data.database.functional.SQLConsumer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 public abstract class AbstractDatabaseEngine {
-
-    protected final IDatabaseConfig databaseConfig;
-    protected final JavaPlugin plugin;
-    private Connection connection;
+    @Getter
+    private final JavaPlugin plugin;
+    @Getter
+    private final IDatabaseConfig databaseConfig;
+    private HikariDataSource dataSource;
 
     public AbstractDatabaseEngine(JavaPlugin plugin, IDatabaseConfig databaseConfig) {
         this.plugin = plugin;
         this.databaseConfig = databaseConfig;
     }
 
-    // Mesma lógica, mas:
-    protected void logError(String message) {
-        plugin.getLogger().severe(message);
+    protected abstract String getJdbcUrl();
+
+    protected abstract void configure(HikariConfig config);
+
+    public void connect() {
+        if (dataSource != null && !dataSource.isClosed()) return;
+
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(getJdbcUrl());
+        config.setMaximumPoolSize(10);
+        config.setPoolName("MatoDatabasePool");
+
+        configure(config);
+
+        this.dataSource = new HikariDataSource(config);
+        plugin.getLogger().info("Conectado ao banco de dados com HikariCP: " + getJdbcUrl());
     }
 
-    public abstract void connect() throws SQLException;
+    public void disconnect() {
+        if (dataSource != null && !dataSource.isClosed()) {
+            dataSource.close();
+            plugin.getLogger().info("Conexão com o banco de dados encerrada.");
+        }
+    }
 
-    public abstract void disconnect() throws SQLException;
+    public Connection getConnection() throws SQLException {
+        if (dataSource == null || dataSource.isClosed()) {
+            connect();
+        }
+        return dataSource.getConnection();
+    }
 
-    public abstract void createTables(String... tables) throws SQLException;
+    public void createTables(String... tableStatements) throws SQLException {
+        try (Connection conn = getConnection()) {
+            for (String sql : tableStatements) {
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute(sql);
+                }
+            }
+        }
+    }
 
-    public void update(String sql, Consumer<PreparedStatement> handler) {
+    // Executa um update (INSERT, UPDATE, DELETE)
+    public void executeUpdate(String sql, SQLConsumer<PreparedStatement> prepare) {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            handler.accept(stmt);
+            prepare.accept(stmt);
             stmt.executeUpdate();
-
         } catch (SQLException e) {
-            logError("Failed to execute update: " + e.getMessage());
+            plugin.getLogger().severe("Erro ao executar update: " + sql);
+            e.printStackTrace();
         }
     }
 
-    public void query(String sql, Consumer<ResultSet> handler) {
+    // Executa uma query (SELECT) com retorno processado por um handler
+    public void executeQuery(String sql, SQLConsumer<PreparedStatement> prepare, SQLConsumer<ResultSet> handler) {
         try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            handler.accept(rs);
-
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            prepare.accept(stmt);
+            try (ResultSet rs = stmt.executeQuery()) {
+                handler.accept(rs);
+            }
         } catch (SQLException e) {
-            logError("Failed to execute query: " + e.getMessage());
+            plugin.getLogger().severe("Erro ao executar query: " + sql);
+            e.printStackTrace();
         }
     }
 
-    public IDatabaseConfig getDatabaseConfig() {
-        return databaseConfig;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                connect();
+    // Versão com retorno
+    public <T> T query(String sql, SQLConsumer<PreparedStatement> prepare, Function<ResultSet, T> mapper) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            prepare.accept(stmt);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return mapper.apply(rs);
             }
-
-            return connection;
         } catch (SQLException e) {
-            logError("Failed to connect to the database: " + e.getMessage());
-            throw new IllegalStateException("Database connection is not available", e);
+            plugin.getLogger().severe("Erro ao executar query com retorno: " + sql);
+            e.printStackTrace();
+            return null;
         }
     }
 }

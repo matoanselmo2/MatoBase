@@ -5,6 +5,8 @@ import me.mato.plugin.base.MatoBase;
 import me.mato.plugin.base.command.BaseCommand;
 import me.mato.plugin.base.command.CommandContext;
 import me.mato.plugin.base.data.dao.PlayerDAO;
+import me.mato.plugin.base.data.model.PlayerDataModel;
+import me.mato.plugin.base.util.Permission;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class MainCommand extends BaseCommand {
 
     @Inject
     public MainCommand(MatoBase plugin, PlayerDAO playerDAO) {
-        super(plugin.getName().toLowerCase(), "Comando principal do plugin " + plugin.getName());
+        super(plugin.getName().toLowerCase(), "Comando principal do plugin " + plugin.getName(), Permission.ADMIN);
         this.playerDAO = playerDAO;
     }
 
@@ -22,10 +24,16 @@ public class MainCommand extends BaseCommand {
     public void execute(CommandContext context) {
         context.sender().sendMessage("Você executou o comando principal do plugin e salvou os dados do jogador!");
 
-        playerDAO.updatePlayer(context.player().getUniqueId(), context.player().getLevel());
+        playerDAO.updatePlayerLevel(context.player().getUniqueId(), context.player().getLevel());
 
-        if (playerDAO.getPlayerData(context.player().getUniqueId()) == null) {
-            playerDAO.insertPlayer(context.player().getUniqueId().toString(), context.player().getName(), context.player().getLevel());
+        if (playerDAO.getPlayerData(context.player().getUniqueId()).isEmpty()) {
+            PlayerDataModel model = new PlayerDataModel(
+                    context.player().getUniqueId(),
+                    context.player().getName(),
+                    context.player().getLevel()
+            );
+
+            playerDAO.insertPlayer(model);
             context.player().sendMessage("Dados do jogador inseridos com sucesso!");
 
             return;
@@ -33,7 +41,7 @@ public class MainCommand extends BaseCommand {
             context.player().sendMessage("Dados do jogador já existem, atualizando...");
         }
 
-        int playerData = playerDAO.getPlayerData(context.player().getUniqueId()).getLevel();
+        int playerData = playerDAO.getPlayerData(context.player().getUniqueId()).get().level();
 
         context.player().sendMessage("Seu XP é: " + playerData);
     }

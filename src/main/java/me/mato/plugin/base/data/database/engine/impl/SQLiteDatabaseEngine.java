@@ -1,47 +1,28 @@
 package me.mato.plugin.base.data.database.engine.impl;
 
+import com.zaxxer.hikari.HikariConfig;
 import me.mato.plugin.base.data.database.config.impl.SQLiteDatabaseConfig;
 import me.mato.plugin.base.data.database.engine.AbstractDatabaseEngine;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.File;
 
 public class SQLiteDatabaseEngine extends AbstractDatabaseEngine {
     private final String databasePath;
 
-    public SQLiteDatabaseEngine(JavaPlugin plugin, SQLiteDatabaseConfig databaseConfig) {
-        super(plugin, databaseConfig);
-
-        this.databasePath = plugin.getDataFolder().getPath() + "/" + databaseConfig.database();
+    public SQLiteDatabaseEngine(JavaPlugin plugin, SQLiteDatabaseConfig config) {
+        super(plugin, config);
+        this.databasePath = new File(plugin.getDataFolder(), config.database()).getPath();
     }
 
     @Override
-    public void connect() throws SQLException {
-        String url = "jdbc:sqlite:" + databasePath;
-        setConnection(DriverManager.getConnection(url));
+    protected String getJdbcUrl() {
+        return "jdbc:sqlite:" + databasePath;
     }
 
     @Override
-    public void disconnect() throws SQLException {
-        if (getConnection() != null) {
-            getConnection().close();
-        }
-
-        setConnection(null);
+    protected void configure(HikariConfig config) {
+        config.setConnectionTestQuery("SELECT 1"); // SQLite doesn't support some validation methods
+        config.setMaximumPoolSize(1); // SQLite = single-connection engine
     }
-
-    @Override
-    public void createTables(String... tables) throws SQLException {
-        for (String table : tables) {
-            String createTableSQL = table;
-
-            if (getConnection() == null || getConnection().isClosed()) {
-                connect();
-            }
-
-            getConnection().createStatement().execute(createTableSQL);
-        }
-    }
-
 }
