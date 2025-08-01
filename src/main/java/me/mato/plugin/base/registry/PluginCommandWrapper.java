@@ -38,6 +38,11 @@ public class PluginCommandWrapper extends Command {
                 }
             }
 
+            if (!sender.hasPermission(command.permission().getPermissions())) {
+                sender.sendMessage("§cVocê não tem permissão para executar este comando.");
+                return true;
+            }
+
             command.execute(ctx);
         } catch (IllegalArgumentException | IllegalStateException e) {
             sender.sendMessage("§cErro: " + e.getMessage());

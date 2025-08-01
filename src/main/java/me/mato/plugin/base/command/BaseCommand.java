@@ -1,16 +1,20 @@
 package me.mato.plugin.base.command;
 
+import me.mato.plugin.base.util.Permission;
+
 import java.util.*;
 
 public abstract class BaseCommand {
 
     private final String name;
     private final String description;
+    private final Permission permission;
     private final Map<String, SubCommand> subCommands = new HashMap<>();
 
-    public BaseCommand(String name, String description) {
+    public BaseCommand(String name, String description, Permission permission) {
         this.name = name;
         this.description = description;
+        this.permission = permission;
     }
 
     public String getName() { return name; }
@@ -45,6 +49,10 @@ public abstract class BaseCommand {
         }
 
         return List.of();
+    }
+
+    public Permission permission() {
+        return permission;
     }
 
     public Map<String, SubCommand> getSubCommands() {
