@@ -3,11 +3,11 @@ package me.mato.plugin.base.command.impl;
 import me.mato.plugin.base.command.BaseCommand;
 import me.mato.plugin.base.command.CommandContext;
 import me.mato.plugin.base.command.impl.sub.ExampleSubCommand;
-import me.mato.plugin.base.util.Permission;
+import me.mato.plugin.base.core.permission.ExamplePermissionGroup;
 
 public class ExampleCommand extends BaseCommand {
     public ExampleCommand() {
-        super("example", "Um comando de exemplo para demonstração do sistema de argumentos", Permission.EXEMPLO);
+        super("example", "Um comando de exemplo para demonstração do sistema de argumentos", ExamplePermissionGroup.USE);
         registerSubCommand(new ExampleSubCommand());
     }
 

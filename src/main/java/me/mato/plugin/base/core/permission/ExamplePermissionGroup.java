@@ -4,7 +4,7 @@ import me.mato.plugin.base.api.permission.PermissionBuilder;
 import me.mato.plugin.base.api.permission.PermissionNode;
 import org.bukkit.permissions.PermissionDefault;
 
-public enum ExamplePermission implements PermissionNode {
+public enum ExamplePermissionGroup implements PermissionNode {
     ADMIN(PermissionBuilder.create("matobase.admin")
             .description("Permite usar os comandos administrativos do MatoBase")
             .defaultValue(PermissionDefault.OP)),
@@ -22,7 +22,7 @@ public enum ExamplePermission implements PermissionNode {
 
     private final PermissionBuilder builder;
 
-    ExamplePermission(PermissionBuilder builder) {
+    ExamplePermissionGroup(PermissionBuilder builder) {
         this.builder = builder;
     }
 

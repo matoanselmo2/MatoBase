@@ -18,7 +18,7 @@ import me.mato.plugin.base.api.database.engine.AbstractDatabaseEngine;
 import me.mato.plugin.base.core.gui.ExampleMenu;
 import me.mato.plugin.base.core.manager.CommandManager;
 import me.mato.plugin.base.core.manager.GuiManager;
-import me.mato.plugin.base.core.permission.ExamplePermission;
+import me.mato.plugin.base.core.permission.ExamplePermissionGroup;
 
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public class PluginModule extends AbstractModule {
         bind(MatoBase.class).toInstance(plugin);
 
         Multibinder<PermissionNode[]> permissionBinder = Multibinder.newSetBinder(binder(), PermissionNode[].class);
-        permissionBinder.addBinding().toInstance(ExamplePermission.values());
+        permissionBinder.addBinding().toInstance(ExamplePermissionGroup.values());
 
         Multibinder<CustomInventoryImpl> guiBinder = Multibinder.newSetBinder(binder(), CustomInventoryImpl.class);
         guiBinder.addBinding().to(ExampleMenu.class);

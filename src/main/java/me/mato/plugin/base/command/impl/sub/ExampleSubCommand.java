@@ -1,8 +1,9 @@
 package me.mato.plugin.base.command.impl.sub;
 
+import me.mato.plugin.base.api.permission.PermissionNode;
 import me.mato.plugin.base.command.CommandContext;
 import me.mato.plugin.base.command.SubCommand;
-import me.mato.plugin.base.util.Permission;
+import me.mato.plugin.base.core.permission.ExamplePermissionGroup;
 
 public class ExampleSubCommand implements SubCommand {
     @Override
@@ -11,8 +12,8 @@ public class ExampleSubCommand implements SubCommand {
     }
 
     @Override
-    public Permission permission() {
-        return Permission.EXEMPLO;
+    public PermissionNode permission() {
+        return ExamplePermissionGroup.USE;
     }
 
     @Override

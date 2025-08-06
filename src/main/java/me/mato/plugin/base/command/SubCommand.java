@@ -1,12 +1,12 @@
 package me.mato.plugin.base.command;
 
-import me.mato.plugin.base.util.Permission;
+import me.mato.plugin.base.api.permission.PermissionNode;
 
 import java.util.List;
 
 public interface SubCommand {
     String name();
-    Permission permission();
+    PermissionNode permission();
 
     void execute(CommandContext context);
 

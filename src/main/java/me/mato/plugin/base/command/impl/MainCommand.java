@@ -6,7 +6,7 @@ import me.mato.plugin.base.command.BaseCommand;
 import me.mato.plugin.base.command.CommandContext;
 import me.mato.plugin.base.api.dao.PlayerDAO;
 import me.mato.plugin.base.api.model.PlayerDataModel;
-import me.mato.plugin.base.util.Permission;
+import me.mato.plugin.base.core.permission.ExamplePermissionGroup;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class MainCommand extends BaseCommand {
 
     @Inject
     public MainCommand(MatoBase plugin, PlayerDAO playerDAO) {
-        super(plugin.getName().toLowerCase(), "Comando principal do plugin " + plugin.getName(), Permission.ADMIN);
+        super(plugin.getName().toLowerCase(), "Comando principal do plugin " + plugin.getName(), ExamplePermissionGroup.ADMIN);
         this.playerDAO = playerDAO;
     }
 
