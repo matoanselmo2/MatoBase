@@ -21,7 +21,7 @@ public class MySQLDatabaseEngine extends AbstractDatabaseEngine {
 
     @Override
     protected String getJdbcUrl() {
-        return "jdbc:mysql://" + host + ":" + port + "/" + getDatabaseConfig().database();
+        return "jdbc:mysql://" + host + ":" + port + "/" + databaseConfig().database();
     }
 
     @Override

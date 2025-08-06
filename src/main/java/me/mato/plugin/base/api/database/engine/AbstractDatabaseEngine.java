@@ -2,7 +2,6 @@ package me.mato.plugin.base.api.database.engine;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.Getter;
 import me.mato.plugin.base.api.database.config.IDatabaseConfig;
 import me.mato.plugin.base.api.database.functional.SQLConsumer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,9 +10,7 @@ import java.sql.*;
 import java.util.function.Function;
 
 public abstract class AbstractDatabaseEngine {
-    @Getter
     private final JavaPlugin plugin;
-    @Getter
     private final IDatabaseConfig databaseConfig;
     private HikariDataSource dataSource;
 
@@ -103,5 +100,13 @@ public abstract class AbstractDatabaseEngine {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public JavaPlugin plugin() {
+        return plugin;
+    }
+
+    public IDatabaseConfig databaseConfig() {
+        return databaseConfig;
     }
 }

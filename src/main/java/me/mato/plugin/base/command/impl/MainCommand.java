@@ -26,7 +26,7 @@ public class MainCommand extends BaseCommand {
 
         playerDAO.updatePlayerLevel(context.player().getUniqueId(), context.player().getLevel());
 
-        if (playerDAO.getPlayerData(context.player().getUniqueId()).isEmpty()) {
+        if (playerDAO.playerData(context.player().getUniqueId()).isEmpty()) {
             PlayerDataModel model = new PlayerDataModel(
                     context.player().getUniqueId(),
                     context.player().getName(),
@@ -41,7 +41,7 @@ public class MainCommand extends BaseCommand {
             context.player().sendMessage("Dados do jogador já existem, atualizando...");
         }
 
-        int playerData = playerDAO.getPlayerData(context.player().getUniqueId()).get().level();
+        int playerData = playerDAO.playerData(context.player().getUniqueId()).get().level();
 
         context.player().sendMessage("Seu XP é: " + playerData);
     }

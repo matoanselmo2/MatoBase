@@ -4,7 +4,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
+import com.henryfabio.minecraft.inventoryapi.inventory.impl.CustomInventoryImpl;
 import me.mato.plugin.base.MatoBase;
+import me.mato.plugin.base.api.permission.PermissionNode;
 import me.mato.plugin.base.command.BaseCommand;
 import me.mato.plugin.base.command.impl.ExampleCommand;
 import me.mato.plugin.base.command.impl.MainCommand;
@@ -13,9 +15,10 @@ import me.mato.plugin.base.api.database.DatabaseFactory;
 import me.mato.plugin.base.api.database.config.DatabaseConfigLoader;
 import me.mato.plugin.base.api.database.config.IDatabaseConfig;
 import me.mato.plugin.base.api.database.engine.AbstractDatabaseEngine;
-import me.mato.plugin.base.core.gui.AbstractGui;
+import me.mato.plugin.base.core.gui.ExampleMenu;
 import me.mato.plugin.base.core.manager.CommandManager;
 import me.mato.plugin.base.core.manager.GuiManager;
+import me.mato.plugin.base.core.permission.ExamplePermission;
 
 import java.util.Set;
 
@@ -30,9 +33,11 @@ public class PluginModule extends AbstractModule {
     protected void configure() {
         bind(MatoBase.class).toInstance(plugin);
 
-        Multibinder<AbstractGui> guiBinder = Multibinder.newSetBinder(binder(), AbstractGui.class);
-        //guiBinder.addBinding().to(MyCoolGui.class);
-        //guiBinder.addBinding().to(AnotherGui.class);
+        Multibinder<PermissionNode[]> permissionBinder = Multibinder.newSetBinder(binder(), PermissionNode[].class);
+        permissionBinder.addBinding().toInstance(ExamplePermission.values());
+
+        Multibinder<CustomInventoryImpl> guiBinder = Multibinder.newSetBinder(binder(), CustomInventoryImpl.class);
+        guiBinder.addBinding().to(ExampleMenu.class);
 
         Multibinder<BaseCommand> commandBinder = Multibinder.newSetBinder(binder(), BaseCommand.class);
         commandBinder.addBinding().to(MainCommand.class);
@@ -55,8 +60,8 @@ public class PluginModule extends AbstractModule {
     }
 
     @Provides @Singleton
-    public GuiManager provideGuiManager(MatoBase plugin, Set<AbstractGui> guis) {
-        return new GuiManager(plugin, guis);
+    public GuiManager provideGuiManager(MatoBase plugin, Set<CustomInventoryImpl> guis) {
+        return new GuiManager(guis);
     }
 
     @Provides @Singleton

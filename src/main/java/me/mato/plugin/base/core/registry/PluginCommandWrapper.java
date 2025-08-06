@@ -16,11 +16,11 @@ public class PluginCommandWrapper extends Command {
     private final MatoBase plugin;
 
     public PluginCommandWrapper(MatoBase plugin, BaseCommand command) {
-        super(command.getName());
+        super(command.name());
         this.plugin = plugin;
         this.command = command;
-        this.setDescription(command.getDescription());
-        this.setUsage("/" + command.getName());
+        this.setDescription(command.description());
+        this.setUsage("/" + command.name());
         this.setPermission(command.permission().getPermission());
     }
 
@@ -31,7 +31,7 @@ public class PluginCommandWrapper extends Command {
         try {
             if (args.length >= 1) {
                 String sub = args[0].toLowerCase();
-                SubCommand subCommand = command.getSubCommands().get(sub);
+                SubCommand subCommand = command.subCommands().get(sub);
 
                 if (subCommand != null) {
                     if (!sender.hasPermission(subCommand.permission().getPermission())) {

@@ -38,14 +38,13 @@ repositories {
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
-
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
-
+    
     implementation "com.google.code.gson:gson:2.10.1"
     implementation "com.google.inject:guice:7.0.0"
     implementation 'com.samjakob:SpiGUI:v1.4.1'
     implementation 'com.zaxxer:HikariCP:7.0.0'
+
+    implementation files("lib/inventory-api.jar")
 }
 
 processResources {

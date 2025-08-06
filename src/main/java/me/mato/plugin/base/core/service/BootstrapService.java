@@ -17,7 +17,7 @@ public class BootstrapService {
 
     public void initialize() {
         // Inicializa o DAO do jogador
-        playerDAO.getEngine().connect();
+        playerDAO.engine().connect();
         playerDAO.createTable();
 
         // Registra comandos no plugin
@@ -28,6 +28,6 @@ public class BootstrapService {
 
     public void shutdown() {
         // Desconecta o DAO do jogador
-        playerDAO.getEngine().disconnect();
+        playerDAO.engine().disconnect();
     }
 }

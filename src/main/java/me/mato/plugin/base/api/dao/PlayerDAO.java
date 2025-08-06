@@ -1,7 +1,6 @@
 package me.mato.plugin.base.api.dao;
 
 import com.google.inject.Inject;
-import lombok.Getter;
 import me.mato.plugin.base.api.database.engine.AbstractDatabaseEngine;
 import me.mato.plugin.base.api.model.PlayerDataModel;
 
@@ -9,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-@Getter
 public class PlayerDAO {
 
     private final AbstractDatabaseEngine engine;
@@ -74,11 +72,11 @@ public class PlayerDAO {
         });
     }
 
-    public Optional<PlayerDataModel> getPlayerData(UUID uuid) {
+    public Optional<PlayerDataModel> playerData(UUID uuid) {
         return Optional.ofNullable(playerCache.get(uuid));
     }
 
-    public List<PlayerDataModel> getAllPlayers() {
+    public List<PlayerDataModel> allPlayers() {
         return new ArrayList<>(playerCache.values());
     }
 
@@ -87,5 +85,13 @@ public class PlayerDAO {
         String name = rs.getString("name");
         int level = rs.getInt("level");
         return new PlayerDataModel(uuid, name, level);
+    }
+
+    public AbstractDatabaseEngine engine() {
+        return engine;
+    }
+
+    public Map<UUID, PlayerDataModel> playerCache() {
+        return playerCache;
     }
 }

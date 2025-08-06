@@ -1,15 +1,12 @@
 package me.mato.plugin.base.command;
 
-import lombok.Getter;
 import me.mato.plugin.base.util.Permission;
 
 import java.util.*;
 
 public abstract class BaseCommand {
 
-    @Getter
     private final String name;
-    @Getter
     private final String description;
     private final Permission permission;
     private final Map<String, SubCommand> subCommands = new HashMap<>();
@@ -75,7 +72,15 @@ public abstract class BaseCommand {
         return permission;
     }
 
-    public Map<String, SubCommand> getSubCommands() {
+    public Map<String, SubCommand> subCommands() {
         return Collections.unmodifiableMap(subCommands);
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String description() {
+        return description;
     }
 }

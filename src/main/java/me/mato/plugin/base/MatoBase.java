@@ -2,13 +2,11 @@ package me.mato.plugin.base;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import lombok.Getter;
 import me.mato.plugin.base.core.service.BootstrapService;
 import me.mato.plugin.base.di.PluginModule;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MatoBase extends JavaPlugin {
-    @Getter
     private Injector injector;
 
     private BootstrapService bootstrap;
@@ -29,5 +27,9 @@ public final class MatoBase extends JavaPlugin {
     public void onDisable() {
         bootstrap.shutdown();
         getLogger().info("MatoPluginBase desligado.");
+    }
+
+    public Injector injector() {
+        return injector;
     }
 }
