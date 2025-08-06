@@ -19,6 +19,7 @@ import me.mato.plugin.base.core.gui.ExampleMenu;
 import me.mato.plugin.base.core.manager.CommandManager;
 import me.mato.plugin.base.core.manager.GuiManager;
 import me.mato.plugin.base.core.permission.ExamplePermissionGroup;
+import me.mato.plugin.base.core.registry.PluginPermissionWrapper;
 
 import java.util.Set;
 

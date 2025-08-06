@@ -6,7 +6,3 @@ prefix: MS
 authors: [ Mato (Mateus Anselmo) ]
 description: Um plugin que vou usar de base para outros plugins.
 website: amitmc.top
-
-permissions:
-    - matobase.admin
-    - matobase.exemple

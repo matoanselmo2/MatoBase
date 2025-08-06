@@ -1,12 +1,11 @@
 package me.mato.plugin.base.core.registry;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import me.mato.plugin.base.MatoBase;
 import me.mato.plugin.base.api.permission.PermissionNode;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.Plugin;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Set;
@@ -14,11 +13,11 @@ import java.util.Set;
 @Singleton
 public class PluginPermissionWrapper {
 
-    private final Plugin plugin;
+    private final MatoBase plugin;
     private final Set<PermissionNode[]> permissionGroups;
 
     @Inject
-    public PluginPermissionWrapper(Plugin plugin, Set<PermissionNode[]> permissionGroups) {
+    public PluginPermissionWrapper(MatoBase plugin, Set<PermissionNode[]> permissionGroups) {
         this.plugin = plugin;
         this.permissionGroups = permissionGroups;
     }
