@@ -101,6 +101,100 @@ int amount = context.intArg(1, 10); // com default
 
 ---
 
+## 🔐 Sistema de Permissões Escalável
+
+* Define permissões usando **enums tipadas com metadados**
+* Suporte a:
+
+    * `description` (descrição da permissão)
+    * `PermissionDefault` (quem recebe por padrão: OP, TRUE, etc)
+    * Permissões **filhas** (`children`)
+* Registro automático via **Dependency Injection com Guice**
+* Documentação automática gerada em `permissions.md`
+* Suporte a permissões dinâmicas com `PermissionBuilder`
+
+---
+
+### ✨ Exemplo: Criando uma enum de permissões
+
+```java
+public enum ExamplePermission implements PermissionNode {
+
+    USE(PermissionBuilder.create("matobase.example.use")
+        .description("Permite usar a funcionalidade de exemplo")
+        .defaultValue(PermissionDefault.TRUE)),
+
+    ADMIN(PermissionBuilder.create("matobase.example.admin")
+        .description("Acessa funcionalidades administrativas")
+        .defaultValue(PermissionDefault.OP)
+        .child("matobase.example.admin.use", true));
+
+    private final PermissionBuilder builder;
+
+    ExamplePermission(PermissionBuilder builder) {
+        this.builder = builder;
+    }
+
+    @Override public String getPermission() { return builder.getPermission(); }
+    @Override public String getDescription() { return builder.getDescription(); }
+    @Override public PermissionDefault getDefaultValue() { return builder.getDefaultValue(); }
+
+    public void register() {
+        builder.register();
+    }
+}
+```
+
+---
+
+### 🧪 Registro via Guice
+
+No seu `PluginModule.java`:
+
+```java
+Multibinder<PermissionNode[]> permissionBinder = Multibinder.newSetBinder(binder(), PermissionNode[].class);
+permissionBinder.addBinding().toInstance(ExamplePermission.values());
+```
+
+> O `PermissionRegistry` vai registrar todas as permissões automaticamente no boot.
+
+---
+
+### 🧾 Geração automática de documentação
+
+Arquivo gerado: `plugins/MatoBase/permissions.md`
+
+```markdown
+## Example
+
+- `matobase.example.use` - *TRUE*  
+  > Permite usar a funcionalidade de exemplo
+
+- `matobase.example.admin` - *OP*  
+  > Acessa funcionalidades administrativas
+```
+
+---
+
+### 🧩 Integração com comandos
+
+Todos os comandos usam `PermissionNode` ao invés de `enum Permission` fixa:
+
+```java
+public class ExampleCommand extends BaseCommand {
+    public ExampleCommand() {
+        super("example", "Comando de exemplo", ExamplePermission.USE);
+    }
+
+    @Override
+    public void execute(CommandContext context) {
+        context.sender().sendMessage("Você executou /example!");
+    }
+}
+```
+
+---
+
 ## 📦 DAO com cache + query moderna (exemplo de PlayerDAO)
 
 ```java
