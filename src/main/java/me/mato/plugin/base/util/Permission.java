@@ -17,16 +17,4 @@ public enum Permission {
     public String getPermission() {
         return "matobase." + permission;
     }
-
-    public String getPermissions(Permission... permissions) {
-        StringBuilder sb = new StringBuilder();
-        for (Permission perm : permissions) {
-            if (!sb.isEmpty()) {
-                sb.append(", ");
-            }
-
-            sb.append(perm.getPermission());
-        }
-        return sb.toString();
-    }
 }

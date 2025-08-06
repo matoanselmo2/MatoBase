@@ -21,6 +21,7 @@ public class PluginCommandWrapper extends Command {
         this.command = command;
         this.setDescription(command.getDescription());
         this.setUsage("/" + command.getName());
+        this.setPermission(command.permission().getPermission());
     }
 
     @Override
@@ -33,12 +34,17 @@ public class PluginCommandWrapper extends Command {
                 SubCommand subCommand = command.getSubCommands().get(sub);
 
                 if (subCommand != null) {
+                    if (!sender.hasPermission(subCommand.permission().getPermission())) {
+                        sender.sendMessage("§cVocê não tem permissão para executar este comando.");
+                        return true;
+                    }
+
                     subCommand.execute(ctx.subContext());
                     return true;
                 }
             }
 
-            if (!sender.hasPermission(command.permission().getPermissions())) {
+            if (!sender.hasPermission(command.permission().getPermission())) {
                 sender.sendMessage("§cVocê não tem permissão para executar este comando.");
                 return true;
             }
